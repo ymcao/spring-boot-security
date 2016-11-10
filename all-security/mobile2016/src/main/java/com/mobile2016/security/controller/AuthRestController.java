@@ -1,10 +1,12 @@
 package com.mobile2016.security.controller;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.mobile2016.security.JwtAuthRequest;
+import com.mobile2016.security.JwtTokenUtil;
+import com.mobile2016.security.JwtUser;
+import com.mobile2016.security.JwtUserFactory;
+import com.mobile2016.security.model.User;
+import com.mobile2016.security.service.JwtAuthResponse;
+import com.mobile2016.security.service.JwtUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mobile2016.common.config.IRedisDao;
-import com.mobile2016.constants.RedisConstants;
-import com.mobile2016.security.JwtAuthRequest;
-import com.mobile2016.security.JwtTokenUtil;
-import com.mobile2016.security.JwtUser;
-import com.mobile2016.security.JwtUserFactory;
-import com.mobile2016.security.model.User;
-import com.mobile2016.security.service.JwtAuthResponse;
-import com.mobile2016.security.service.JwtUserDetailsServiceImpl;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by caoyamin on 2016/11/8.
@@ -47,9 +41,6 @@ public class AuthRestController  {
 
     @Autowired
     private JwtUserDetailsServiceImpl userDetailsService;
-    
-    @Autowired
-    private IRedisDao redisDao;
 
     @RequestMapping(value = "auth/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthRequest authenticationRequest, Device device) throws AuthenticationException {
@@ -62,19 +53,7 @@ public class AuthRestController  {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        
-        String redisKey = String.format(RedisConstants.USERNAME, authenticationRequest.getUsername());
-        String[] fields = {RedisConstants.USERNAME_USERNAME, RedisConstants.USERNAME_PASSWORD};
-        List<String> userInfoList = redisDao.hmget(redisKey, Arrays.asList(fields));
-        if ( !userInfoList.isEmpty() ) {
-        	System.out.println("找到用户信息");
-        	// TODO 封装成UserDetails
-        	
-        } else {
-        	// redis没找到，从数据库查询
-        	
-        }
-        	
+
         // Reload password post-security so we can generate token
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails, device);

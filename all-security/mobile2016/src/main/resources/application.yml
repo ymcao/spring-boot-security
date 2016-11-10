@@ -4,11 +4,6 @@ server:
   tomcat.uri-encoding: UTF-8
 
 spring:
-  redis:
-  	url:127.0.0.1
-  	port:6639
-  	username:
-  	password:
   datasource:
     url : jdbc:mysql://127.0.0.1:3306/mobile_2016?useUnicode=true&characterEncoding=UTF-8
     username : root
