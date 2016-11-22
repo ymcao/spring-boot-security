@@ -1,7 +1,12 @@
 # spring-boot-security
-### I'am learning springboot,I'am a mobile coder
+### 手把手教你创建使用TOKEN以及权限控制
 
-`springboot create and refresh token use jwt`
+`1.spring-boot mybatis
+ 2.spring-boot scurity
+ 3.JWT
+ 4.Redis+Mysql
+`
+
 
 > build.gradle
 
@@ -10,10 +15,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     runtime('mysql:mysql-connector-java')
     compile("org.springframework.boot:spring-boot-starter-web")
-    compile ("org.springframework.boot:spring-boot-starter-data-rest")
-    //compile( "org.springframework.boot:spring-boot-starter-jetty")
-    compile ("org.springframework.boot:spring-boot-starter-data-jpa")
-    //compile ("org.springframework.boot:spring-boot-configuration-processor")
+      compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1"
     compile ("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile ("org.springframework.boot:spring-boot-starter-security")
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.7.0'
@@ -35,12 +37,8 @@ Thanks for
   <tr>
     <td>Next Plan</td>
   </tr>
-  <tr>
-    <td>1. Add Redis cache</td>
-  </tr>
    <tr>
     <td>2. Add Auth2.0</td>
-       
   </tr>
  
 </table>

@@ -18,7 +18,7 @@ public final class JwtUserFactory {
 
     public static JwtUser create(User user) {
         return new JwtUser(
-                user.getUsrid(),
+                user.getId(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
@@ -30,7 +30,7 @@ public final class JwtUserFactory {
 
     private static List<GrantedAuthority> mapToGrantedAuthorities(List<Authority> authorities) {
         return authorities.stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getName().name()))
+                .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                 .collect(Collectors.toList());
     }
 }

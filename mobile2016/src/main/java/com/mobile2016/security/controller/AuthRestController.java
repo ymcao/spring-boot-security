@@ -5,7 +5,7 @@ import com.mobile2016.security.JwtTokenUtil;
 import com.mobile2016.security.JwtUser;
 import com.mobile2016.security.JwtUserFactory;
 import com.mobile2016.security.model.User;
-import com.mobile2016.security.service.JwtAuthResponse;
+import com.mobile2016.security.model.JwtToken;
 import com.mobile2016.security.service.JwtUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,7 +59,7 @@ public class AuthRestController  {
         final String token = jwtTokenUtil.generateToken(userDetails, device);
 
         // Return the token
-        return ResponseEntity.ok(new JwtAuthResponse(token));
+        return ResponseEntity.ok(new JwtToken(token));
     }
 
     @RequestMapping(value = "refresh", method = RequestMethod.GET)
@@ -70,7 +70,7 @@ public class AuthRestController  {
 
         if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
             String refreshedToken = jwtTokenUtil.refreshToken(token);
-            return ResponseEntity.ok(new JwtAuthResponse(refreshedToken));
+            return ResponseEntity.ok(new JwtToken(refreshedToken));
         } else {
             return ResponseEntity.badRequest().body(null);
         }
@@ -80,10 +80,10 @@ public class AuthRestController  {
     public JwtUser register(@RequestBody User user) {
 
         JwtUser u = JwtUserFactory.create(user);
-        if(userDetailsService.save(user)==0){
+        if(userDetailsService.save(user)){
             return u;
         }
-        throw new RuntimeException("Username has existed.");
+        return null;
     }
 
 
